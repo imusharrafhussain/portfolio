@@ -22,7 +22,7 @@ export default function About() {
             <div className="group relative rounded-2xl overflow-hidden border border-[#26262F] bg-[#14141B]">
               <div className="aspect-[4/5] relative w-full overflow-hidden">
                 <Image
-                  src="/images/me/portrait.jpg"
+                  src="/images/me/myself.jpg"
                   alt="Musharraf Hussain"
                   fill
                   className="object-cover object-center filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
