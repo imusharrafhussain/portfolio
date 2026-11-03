@@ -8,8 +8,8 @@ export const siteConfig = {
   location: "Amritsar / Jammu and Kashmir, India",
   education: "B.Tech CSE, Amritsar Group of Colleges (2022-2026) | CGPA 8.5",
   currentRole: "Software Engineering Intern at AstroBharatAI (Jan 2026 - Present)",
-  github: "https://github.com/musharrafhussain",
-  linkedin: "https://www.linkedin.com/in/musharraf-hussain",
+  github: "https://github.com/imusharrafhussain",
+  linkedin: "https://www.linkedin.com/in/musharraf-hussain-260256280/",
   stats: [
     { value: "500+", label: "Students and Users Supported", detail: "Active on college ERP and live platforms" },
     { value: "10s → 2s", label: "Page Load Reduction", detail: "5x performance gain on production web app" },

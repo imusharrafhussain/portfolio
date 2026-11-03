@@ -13,7 +13,7 @@ export const projects: Project[] = [
     status: "Production",
     featured: true,
     liveUrl: "https://parashariindia.com",
-    githubUrl: "https://github.com/musharrafhussain",
+    githubUrl: "https://github.com/imusharrafhussain",
     problem: "The institute's legacy platform suffered from slow 10-second initial load times, high video bandwidth costs, and unencrypted course videos vulnerable to screen ripping and direct downloads.",
     constraints: [
       "Ultra-low latency streaming for learners in tier-2/3 cities on variable 4G connections",
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     status: "Live Revenue",
     featured: true,
     liveUrl: "https://astrodrkunwarharshit.com",
-    githubUrl: "https://github.com/musharrafhussain",
+    githubUrl: "https://github.com/imusharrafhussain",
     problem: "Consultation businesses lose up to 30% of potential bookings due to manual WhatsApp scheduling, delayed manual invoicing, missed customer follow-ups, and lack of unified consultation records.",
     constraints: [
       "Frictionless booking experience for non-tech-savvy users on mobile devices",
@@ -98,7 +98,7 @@ export const projects: Project[] = [
     image: "/images/projects/bus-tracking.png",
     status: "Concept / Scalable",
     featured: true,
-    githubUrl: "https://github.com/musharrafhussain",
+    githubUrl: "https://github.com/imusharrafhussain",
     problem: "Colleges and municipal transport in smaller towns cannot afford \$150+ dedicated GPS hardware units per bus plus expensive monthly vendor subscriptions.",
     constraints: [
       "Operate reliably on low-cost Android smartphones used by drivers",
@@ -140,7 +140,7 @@ export const projects: Project[] = [
     image: "/images/projects/erp.png",
     status: "Production",
     featured: true,
-    githubUrl: "https://github.com/musharrafhussain",
+    githubUrl: "https://github.com/imusharrafhussain",
     problem: "Colleges in smaller cities frequently rely on manual spreadsheets or outdated local legacy desktop software, resulting in missing attendance records, chaotic fee audits, and manual grade calculations.",
     constraints: [
       "Strict role separation between Administrative Officers, Department Faculty, and Students",
