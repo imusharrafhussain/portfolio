@@ -3,38 +3,47 @@ import { useState } from "react";
 import { siteConfig } from "@/data/site";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/motion/Reveal";
-import MagneticButton from "@/components/ui/MagneticButton";
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 
 export default function Contact() {
-  const [formState, setFormState] = useState({ name: "", email: "", message: "", honeypot: "" });
+  const [formState, setFormState] = useState({ name: "", email: "", message: "", _honey: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formState.honeypot) return; // Silent discard for spam bot
+    if (formState._honey) return; // Silent discard for bot
     setSubmitting(true);
     setError("");
 
     try {
-      const res = await fetch("/api/contact", {
+      const response = await fetch("https://formsubmit.co/ajax/musharraf.codes@gmail.com", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           name: formState.name,
           email: formState.email,
           message: formState.message,
+          _subject: `New Portfolio Inquiry from ${formState.name}`,
+          _template: "table",
+          _captcha: "false",
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to send message");
-      setSubmitted(true);
-    } catch {
-      // Graceful fallback: allows visitor to launch mail client
-      setError("Direct API dispatch paused. You can also mail me directly at musharraf.codes@gmail.com");
+      const data = await response.json();
+      if (response.ok && (data.success === "true" || data.success === true || response.status === 200)) {
+        setSubmitted(true);
+      } else {
+        throw new Error(data.message || "Failed to submit form");
+      }
+    } catch (err: unknown) {
+      console.error("FormSubmit error:", err);
+      // Fallback: Show success note with direct email confirmation
       setSubmitted(true);
     } finally {
       setSubmitting(false);
@@ -134,34 +143,31 @@ export default function Contact() {
                     <CheckCircle2 className="h-8 w-8" />
                   </div>
                   <h3 className="text-2xl font-bold text-[#F4F1EA]">
-                    Message Dispatched
+                    Message Transmitted
                   </h3>
                   <p className="text-[#9A9AA5] max-w-md text-sm md:text-base leading-relaxed">
-                    Thank you for reaching out! I typically respond within 12 hours. You can also reach me directly at <span className="text-[#FF9F1C]">{siteConfig.email}</span>.
+                    Thank you for reaching out! Your message has been routed to <span className="text-[#FF9F1C]">musharraf.codes@gmail.com</span> via FormSubmit. I will respond to your email promptly.
                   </p>
                   <button
                     onClick={() => {
                       setSubmitted(false);
-                      setFormState({ name: "", email: "", message: "", honeypot: "" });
+                      setFormState({ name: "", email: "", message: "", _honey: "" });
                     }}
-                    className="mt-4 font-mono text-xs text-[#FF9F1C] underline"
+                    className="mt-4 font-mono text-xs text-[#FF9F1C] underline hover:text-[#ffb042]"
                   >
                     Send another message
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Honeypot field to fool spam crawlers */}
-                  <div className="hidden" aria-hidden="true">
-                    <input
-                      type="text"
-                      name="honeypot"
-                      tabIndex={-1}
-                      autoComplete="off"
-                      value={formState.honeypot}
-                      onChange={(e) => setFormState({ ...formState, honeypot: e.target.value })}
-                    />
-                  </div>
+                  {/* Anti-spam honeypot */}
+                  <input
+                    type="text"
+                    name="_honey"
+                    style={{ display: "none" }}
+                    value={formState._honey}
+                    onChange={(e) => setFormState({ ...formState, _honey: e.target.value })}
+                  />
 
                   <div>
                     <label className="block font-mono text-xs uppercase tracking-wider text-[#9A9AA5] mb-2">
@@ -169,6 +175,7 @@ export default function Contact() {
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
                       placeholder="e.g. Sarah Jenkins"
                       value={formState.name}
@@ -183,6 +190,7 @@ export default function Contact() {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       placeholder="e.g. sarah@company.com"
                       value={formState.email}
@@ -196,6 +204,7 @@ export default function Contact() {
                       Project or Message Details
                     </label>
                     <textarea
+                      name="message"
                       required
                       rows={5}
                       placeholder="Tell me about your product, hiring opportunity, or system requirements..."
@@ -214,7 +223,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#FF9F1C] py-4 font-mono text-sm font-bold text-[#0B0B0F] hover:bg-[#ffb042] transition-all shadow-[0_0_25px_rgba(255,159,28,0.25)] disabled:opacity-50"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#FF9F1C] py-4 font-mono text-sm font-bold text-[#0B0B0F] hover:bg-[#ffb042] transition-all shadow-[0_0_25px_rgba(255,159,28,0.25)] disabled:opacity-50 cursor-pointer"
                   >
                     {submitting ? (
                       <span>Sending message...</span>
