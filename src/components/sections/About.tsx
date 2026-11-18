@@ -1,11 +1,44 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { siteConfig } from "@/data/site";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/motion/Reveal";
-import { MapPin, GraduationCap, Briefcase, Zap } from "lucide-react";
+import { MapPin, GraduationCap, Briefcase } from "lucide-react";
 
 export default function About() {
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const [isInViewMobile, setIsInViewMobile] = useState(false);
+
+  useEffect(() => {
+    const el = imageContainerRef.current;
+    if (!el) return;
+
+    // IntersectionObserver to detect when the portrait image is prominently in viewport on mobile
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // When 45%+ of the image is visible on the screen, transition to full color on mobile
+          if (entry.isIntersecting) {
+            setIsInViewMobile(true);
+          } else {
+            setIsInViewMobile(false);
+          }
+        });
+      },
+      {
+        threshold: [0.45],
+        rootMargin: "0px 0px -10% 0px",
+      }
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <section id="about" className="py-24 md:py-36 px-6 md:px-12 max-w-7xl mx-auto">
       <SectionHeading
@@ -19,13 +52,22 @@ export default function About() {
         {/* Left Column: Portrait & Quick Facts */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           <Reveal>
-            <div className="group relative rounded-2xl overflow-hidden border border-[#26262F] bg-[#14141B]">
+            <div
+              ref={imageContainerRef}
+              className="group relative rounded-2xl overflow-hidden border border-[#26262F] bg-[#14141B]"
+            >
               <div className="aspect-[4/5] relative w-full overflow-hidden">
                 <Image
                   src="/images/me/myself.jpg"
                   alt="Musharraf Hussain"
                   fill
-                  className="object-cover object-center filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+                  className={`object-cover object-center transition-all duration-700 ease-out md:group-hover:scale-105 ${
+                    // Desktop: Black & white by default, color on hover
+                    // Mobile: Automatically colored when scrolled into view, otherwise black & white
+                    isInViewMobile
+                      ? "grayscale-0 md:grayscale md:group-hover:grayscale-0"
+                      : "grayscale md:grayscale md:group-hover:grayscale-0"
+                  }`}
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] via-transparent to-transparent opacity-80" />
